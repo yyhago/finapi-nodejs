@@ -1,0 +1,25 @@
+{
+  "name": "finapi-nodejs",
+  "version": "1.0.0",
+  "description": "Uma API REST para gerenciamento de contas bancárias digitais, desenvolvida para simular operações básicas de uma instituição financeira.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yyhago/finapi-nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yyhago/finapi-nodejs/issues"
+  },
+  "homepage": "https://github.com/yyhago/finapi-nodejs#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
