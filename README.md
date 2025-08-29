@@ -9,26 +9,26 @@ O FinApi é um sistema backend que simula as principais funcionalidades de um ba
 ## ✨ Funcionalidades
 
 ### Operações Implementadas
-- ✅ Criar uma conta bancária
-- ✅ Buscar extrato bancário do cliente
-- ✅ Realizar depósitos
-- ✅ Realizar saques
-- ✅ Buscar extrato por período específico
-- ✅ Atualizar dados da conta
-- ✅ Obter informações da conta
-- ✅ Deletar uma conta
-- ✅ Consultar saldo atual
+-  Criar uma conta bancária
+-  Buscar extrato bancário do cliente
+-  Realizar depósitos
+-  Realizar saques
+-  Buscar extrato por período específico
+-  Atualizar dados da conta
+-  Obter informações da conta
+-  Deletar uma conta
+-  Consultar saldo atual
 
 ## 🔐 Regras de Negócio
 
 O sistema implementa as seguintes validações de segurança:
 
-- 🚫 Não permite cadastro de contas com CPF duplicado
-- 🚫 Impede consulta de extrato em contas inexistentes
-- 🚫 Bloqueia depósitos em contas que não existem
-- 🚫 Não permite saques em contas inexistentes
-- 🚫 Impede saques com saldo insuficiente
-- 🚫 Não permite exclusão de contas inexistentes
+-  Não permite cadastro de contas com CPF duplicado
+-  Impede consulta de extrato em contas inexistentes
+-  Bloqueia depósitos em contas que não existem
+-  Não permite saques em contas inexistentes
+-  Impede saques com saldo insuficiente
+-  Não permite exclusão de contas inexistentes
 
 ## 🛠️ Tecnologias Utilizadas
 
