@@ -5,7 +5,7 @@ const router = Router();
 const databaseTemporario = [];
 
 // Criar conta bancária
-router.post('/', (request, response) => {
+router.post('/criarConta', (request, response) => {
     const {nome, cpf} = request.body;
 
     databaseTemporario.push({
