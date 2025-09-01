@@ -8,6 +8,11 @@ const databaseTemporario = [];
 router.post('/criarConta', (request, response) => {
     const {nome, cpf} = request.body;
 
+    const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf)
+    if(dadosConta){
+        return response.json({ message: "Usuário já existente!"})
+    }
+
     databaseTemporario.push({
         id: uuid(),
         nome,
@@ -24,7 +29,7 @@ router.post('/:cpf/:saldoDeposito', (request, response) => {
     const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf)
 
     if(!dadosConta){
-        return response.status(401).json({message: "Conta não encontrada"})
+        return response.status(401).json({message: "Conta não encontrada, ou usuário bloqueado!"})
     }
 
     dadosConta.extrato.push({
@@ -43,7 +48,7 @@ router.get('/:cpf', (request, response) => {
     const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf);
 
     if(!dadosConta){
-        return response.status(401).json({message : "Conta não encontrada"});
+        return response.status(401).json({message : "Conta não encontrada!"});
     }
     return response.json({dadosConta});
 })

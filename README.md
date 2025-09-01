@@ -23,9 +23,9 @@ O FinApi é um sistema backend que simula as principais funcionalidades de um ba
 
 O sistema implementa as seguintes validações de segurança:
 
--  Não permite cadastro de contas com CPF duplicado
--  Impede consulta de extrato em contas inexistentes
--  Bloqueia depósitos em contas que não existem
+- ✅ Não permite cadastro de contas com CPF duplicado
+- ✅ Impede consulta de extrato em contas inexistentes
+- ✅ Bloqueia depósitos em contas que não existem
 -  Não permite saques em contas inexistentes
 -  Impede saques com saldo insuficiente
 -  Não permite exclusão de contas inexistentes
