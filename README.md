@@ -9,9 +9,9 @@ O FinApi é um sistema backend que simula as principais funcionalidades de um ba
 ## ✨ Funcionalidades
 
 ### Operações Implementadas
--  Criar uma conta bancária
--  Buscar extrato bancário do cliente
--  Realizar depósitos
+- ✅ Criar uma conta bancária
+- ✅ Buscar extrato bancário do cliente
+- ✅ Realizar depósitos
 -  Realizar saques
 -  Buscar extrato por período específico
 -  Atualizar dados da conta

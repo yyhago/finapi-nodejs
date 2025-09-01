@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const contaRoute = require('./route')
-router.use('/conta', contaRoute);
+const routeBanco = require('./routeBanco')
+router.use('/conta', routeBanco);
 
 module.exports = router
