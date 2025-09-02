@@ -84,4 +84,17 @@ router.post('/:cpf/:saldoDeposito', middlewareCPF, (request, response) => {
     return response.json({message: `Depósito realizado com sucesso!`});
 });
 
+// Deletar conta bancária!
+router.delete('/:cpf/deletarConta', middlewareCPF, (request, response) => {
+    const {cpf} = request.params
+    const indexDatabase = databaseTemporario.find(indexDatabase => indexDatabase.cpf === cpf)
+
+    if(indexDatabase === -1){
+        return response.status(400).json({message: "Conta bancária não encontrada"})
+    }
+    
+    databaseTemporario.splice(indexDatabase, 1)
+    return response.status(200).json({ message: "Conta bancária deletada com sucesso"})
+})
+
 module.exports = router;

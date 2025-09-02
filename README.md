@@ -28,7 +28,7 @@ O sistema implementa as seguintes validações de segurança:
 - ✅ Bloqueia depósitos em contas que não existem
 - ✅ Não permite saques em contas inexistentes
 - ✅ Impede saques com saldo insuficiente
--  Não permite exclusão de contas inexistentes
+- ✅ Não permite exclusão de contas inexistentes
 
 ## 🛠️ Tecnologias Utilizadas
 
