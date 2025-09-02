@@ -4,6 +4,33 @@ const router = Router();
 
 const databaseTemporario = [];
 
+
+
+function middlewareCPF(request, response, next){
+    const {cpf} = request.params;
+    const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf);
+
+    if(!dadosConta){
+        return response.status(401).json({message : "Conta não encontrada!"});
+    }
+
+    request.dadosConta = dadosConta;
+    return next()
+}
+
+function diferencaPagamentos(dadosConta){
+    return dadosConta.extrato.reduce((acc, operacao) => {
+        if(operacao.tipo === 'credito'){
+            return acc + operacao.valor;
+        } else {
+            return acc - operacao.valor;
+        }
+    }, 0);
+}
+
+
+
+
 // Criar conta bancária
 router.post('/criarConta', (request, response) => {
     const {nome, cpf} = request.body;
@@ -24,16 +51,12 @@ router.post('/criarConta', (request, response) => {
 
 
 // Realizar depósito bancário!
-router.post('/:cpf/:saldoDeposito', (request, response) => {
-    const { cpf, saldoDeposito } = request.params
-    const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf)
-
-    if(!dadosConta){
-        return response.status(401).json({message: "Conta não encontrada, ou usuário bloqueado!"})
-    }
+router.post('/:cpf/:realizardeposito', middlewareCPF, (request, response) => {
+    const { saldoDeposito } = request.params;
+    const { dadosConta } = request;
 
     dadosConta.extrato.push({
-        tipo: "deposito",
+        tipo: "credito",
         valor: Number(saldoDeposito),
         data: new Date()
     })
@@ -42,14 +65,30 @@ router.post('/:cpf/:saldoDeposito', (request, response) => {
 })
 
 
-// Consultar extrato bancário
-router.get('/:cpf', (request, response) => {
-    const {cpf} = request.params;
-    const dadosConta = databaseTemporario.find(databaseTemporario => databaseTemporario.cpf === cpf);
+//Realizar saque bancário
+router.post('/realizarsaque/:cpf', middlewareCPF, (request, response) => {
+    const { valor } = request.body;
+    const { dadosConta } = request;
 
-    if(!dadosConta){
-        return response.status(401).json({message : "Conta não encontrada!"});
+    const saldoAtual = diferencaPagamentos(dadosConta);
+
+    if(saldoAtual < valor){
+        return response.status(400).json({ message: "Saldo insuficiente" });
     }
+
+    dadosConta.extrato.push({
+        tipo: "debito",
+        valor: Number(valor),
+        data: new Date()
+    });
+
+    return response.status(201).json({ message: "Saque realizado com sucesso!" });
+});
+
+
+// Consultar extrato bancário
+router.get('/:cpf', middlewareCPF, (request, response) => {
+    const {dadosConta} = request
     return response.json({dadosConta});
 })
 
