@@ -26,7 +26,7 @@ function diferencaPagamentos(dadosConta){
     }, 0);
 }
 
-// Criar conta bancária
+// Criar uma nova conta bancária
 router.post('/criarConta', (request, response) => {
     const {nome, cpf} = request.body;
     
@@ -44,13 +44,45 @@ router.post('/criarConta', (request, response) => {
     return response.json({ message: "Conta Criada com sucesso!"});
 });
 
-// Consultar extrato bancário
+// Consultar extrato completo da conta
 router.get('/:cpf', middlewareCPF, (request, response) => {
     const {dadosConta} = request;
     return response.json({dadosConta});
 });
 
-// Realizar saque bancário 
+// Consultar extrato filtrado por uma data específica
+router.get('/:cpf/buscarData', middlewareCPF, (request, response) => {
+    const { dadosConta } = request;
+    const { data } = request.query;
+
+    if (!data) {
+        return response.status(400).json({ message: "Data não informada!" });
+    }
+
+    const formatoData = new Date(data + " 00:00");
+
+    const extratoFiltrado = dadosConta.extrato.filter((operacao) => {
+        return new Date(operacao.data).toDateString() === formatoData.toDateString();
+    });
+
+    return response.json(extratoFiltrado);
+});
+
+// Atualizar informações da conta
+router.put('/:cpf/atualizarConta', middlewareCPF, (request, response) => {
+    const {dadosConta} = request;
+    const {nome} = request.body;
+
+    if (!nome) {
+        return response.status(400).json({ message: "Nome não informado!" });
+    }
+
+    dadosConta.nome = nome;
+
+    return response.status(200).json({ message: "Conta atualizada com sucesso!", dadosConta });
+});
+
+// Realizar saque em uma conta
 router.post('/:cpf/realizarsaque', middlewareCPF, (request, response) => {
     const { valor } = request.body;
     const { dadosConta } = request;
@@ -70,31 +102,35 @@ router.post('/:cpf/realizarsaque', middlewareCPF, (request, response) => {
     return response.status(201).json({ message: "Saque realizado com sucesso!" });
 });
 
-// Realizar depósito bancário!
-router.post('/:cpf/:saldoDeposito', middlewareCPF, (request, response) => {
-    const { saldoDeposito } = request.params;
+// Realizar depósito em uma conta
+router.post('/:cpf/deposito', middlewareCPF, (request, response) => {
+    const { valor } = request.body;
     const { dadosConta } = request;
     
+    if (!valor || isNaN(valor)) {
+        return response.status(400).json({ message: "Valor inválido para depósito!" });
+    }
+
     dadosConta.extrato.push({
         tipo: "credito", 
-        valor: Number(saldoDeposito),
+        valor: Number(valor),
         data: new Date()
     });
     
-    return response.json({message: `Depósito realizado com sucesso!`});
+    return response.json({message: `Depósito de R$${valor} realizado com sucesso!`});
 });
 
-// Deletar conta bancária!
+// Deletar uma conta bancária
 router.delete('/:cpf/deletarConta', middlewareCPF, (request, response) => {
-    const {cpf} = request.params
-    const indexDatabase = databaseTemporario.find(indexDatabase => indexDatabase.cpf === cpf)
+    const {cpf} = request.params;
+    const indexDatabase = databaseTemporario.findIndex(db => db.cpf === cpf);
 
     if(indexDatabase === -1){
-        return response.status(400).json({message: "Conta bancária não encontrada"})
+        return response.status(400).json({message: "Conta bancária não encontrada"});
     }
     
-    databaseTemporario.splice(indexDatabase, 1)
-    return response.status(200).json({ message: "Conta bancária deletada com sucesso"})
+    databaseTemporario.splice(indexDatabase, 1);
+    return response.status(200).json({ message: "Conta bancária deletada com sucesso"});
 })
 
 module.exports = router;
